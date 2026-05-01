@@ -72,6 +72,11 @@ def normalise(s: str) -> str:
 
 def write_manifest(rows: list[dict], out_path: Path, with_confidence: bool):
     fieldnames = ["chapter_no", "title", "section", "start_page", "keywords"]
+    # Preserve the source publication's chapter number for reference if
+    # any row has it (titles mode emits this column; bookmarks mode does not).
+    has_orig = any(r.get("orig_chapter_no") for r in rows)
+    if has_orig:
+        fieldnames.append("orig_chapter_no")
     if with_confidence:
         fieldnames.append("confidence")
     with out_path.open("w", newline="", encoding="utf-8") as f:
@@ -131,10 +136,17 @@ def from_bookmarks(reader: PdfReader) -> list[dict]:
 
 # ── Mode 2: title scan ─────────────────────────────────────────────────────
 def from_titles(reader: PdfReader, titles_csv: Path) -> list[dict]:
-    """Match each chapter title to the page where it first appears as a
-    heading. v2: index-of-contents pages are excluded, and chapters are
-    located in order so each one's page must come AFTER the previous
-    chapter's page."""
+    """v3: trust the PDF, not the index.
+
+    For each title in titles_csv, find the page where it appears as a
+    heading in the PDF body. Then sort matches by PDF page order and
+    re-number chapters 1..N in that order. Titles whose chapter doesn't
+    appear in the PDF are reported and dropped.
+
+    The chapter_no column from titles_csv is preserved as `orig_chapter_no`
+    for reference but is NOT used as the chapter number — the source
+    publication's index numbering is treated as unreliable.
+    """
     with titles_csv.open(newline="", encoding="utf-8-sig") as f:
         wanted = []
         for raw in csv.DictReader(f):
@@ -158,8 +170,6 @@ def from_titles(reader: PdfReader, titles_csv: Path) -> list[dict]:
             print(f"  {i + 1} pages indexed")
 
     # ── Detect TOC / index pages and exclude them from the search pool ──
-    # Any page that contains 4+ distinct chapter titles is almost certainly
-    # a table-of-contents page, not a chapter page.
     all_titles = [normalise(w["title"]) for w in wanted]
     toc_pages: set[int] = set()
     for i, txt in enumerate(pages_text):
@@ -175,67 +185,101 @@ def from_titles(reader: PdfReader, titles_csv: Path) -> list[dict]:
 
     def score_page(target: str, page_idx: int) -> int:
         """Score how strongly `target` appears as a heading on this page.
-        Returns 0 if the title is not present in the top portion of the
-        page text. Token-overlap fallback intentionally removed — it
-        produced too many false positives."""
+        Earlier on the page and earlier in the book both rank higher."""
         if page_idx in toc_pages:
             return 0
         txt = pages_text[page_idx]
         head = txt[:600]
         if target in head:
-            # Earlier in the page = higher score (real headings sit at top).
             pos = head.find(target)
+            # Heading bias: earlier-in-page wins ties.
             return 200 - (pos // 10)
         if target in txt:
-            return 60  # appears on page but not as a heading
+            return 60
         return 0
 
-    # ── Walk chapters in order; each must come after the previous ──
-    rows: list[dict] = []
-    cursor = 0  # 0-indexed page; chapter N must be on a page >= cursor
+    # ── For each title, find its best-matching page anywhere in the PDF ──
+    matches = []
     for w in wanted:
         target = normalise(w["title"])
         best_page = None
         best_score = 0
-
-        # First pass: only look at or after the cursor.
-        for i in range(cursor, n_pages):
+        for i in range(n_pages):
             s = score_page(target, i)
+            # Tie-break: prefer earlier page (a chapter heading is typically
+            # the first occurrence; later mentions are cross-references).
             if s > best_score:
                 best_score = s
                 best_page = i + 1
+        matches.append(
+            {
+                "orig_chapter_no": w.get("chapter_no", ""),
+                "title": w["title"],
+                "section": w.get("section", ""),
+                "best_page": best_page,
+                "score": best_score,
+            }
+        )
 
-        # If nothing strong found ahead, allow a backward scan but
-        # ONLY for the very first chapter (cursor still at 0). For
-        # later chapters, an out-of-order match is almost always wrong.
-        if best_page is None and cursor == 0:
-            for i in range(0, n_pages):
-                s = score_page(target, i)
-                if s > best_score:
-                    best_score = s
-                    best_page = i + 1
+    # Drop titles that don't appear meaningfully in the PDF body.
+    SCORE_FLOOR = 60
+    matched = [m for m in matches if m["score"] >= SCORE_FLOOR and m["best_page"]]
+    dropped = [m for m in matches if m["score"] < SCORE_FLOOR or not m["best_page"]]
 
-        if best_page:
-            cursor = best_page  # advance, so next chapter starts from here
+    if dropped:
+        print(
+            f"\n  ⚠  {len(dropped)} title(s) had no match in the PDF body — "
+            "dropped:"
+        )
+        for d in dropped:
+            print(f"     orig #{d['orig_chapter_no']:>3}  {d['title']}")
 
-        if best_score >= 150:
+    # ── Sort by PDF page order, then renumber 1..N ──
+    matched.sort(key=lambda m: (m["best_page"], -m["score"]))
+
+    # Some titles might collide on the same page (rare). Keep the higher
+    # scorer and drop the others.
+    used_pages: set[int] = set()
+    deduped = []
+    collisions = []
+    for m in matched:
+        if m["best_page"] in used_pages:
+            collisions.append(m)
+            continue
+        used_pages.add(m["best_page"])
+        deduped.append(m)
+    if collisions:
+        print(
+            f"\n  ⚠  {len(collisions)} title(s) collided on a page already "
+            "claimed by another chapter — dropped:"
+        )
+        for c in collisions:
+            print(f"     orig #{c['orig_chapter_no']:>3}  {c['title']}  → page {c['best_page']}")
+
+    rows = []
+    for new_no, m in enumerate(deduped, start=1):
+        if m["score"] >= 150:
             confidence = "high"
-        elif best_score >= 60:
+        elif m["score"] >= 60:
             confidence = "medium"
         else:
             confidence = "LOW — verify manually"
-
         rows.append(
             {
-                "chapter_no": w.get("chapter_no") or len(rows) + 1,
-                "title": w["title"],
-                "section": w.get("section", ""),
-                "start_page": best_page or "",
+                "chapter_no": new_no,
+                "orig_chapter_no": m["orig_chapter_no"],
+                "title": m["title"],
+                "section": m["section"],
+                "start_page": m["best_page"],
                 "keywords": "",
                 "confidence": confidence,
             }
         )
 
+    print(
+        f"\n  matched {len(rows)} chapters in PDF order "
+        f"(of {len(wanted)} titles in the input)."
+    )
     return rows
 
 

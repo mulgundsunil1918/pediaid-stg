@@ -97,6 +97,7 @@ def read_manifest(manifest_path: Path) -> list[dict]:
                     "is missing a numeric start_page."
                 )
             row["section"] = row.get("section", "")
+            row["orig_chapter_no"] = row.get("orig_chapter_no", "")
             kw = row.get("keywords", "") or ""
             row["keywords"] = [k.strip() for k in kw.split(";") if k.strip()]
             rows.append(row)
@@ -149,19 +150,20 @@ def split(
         pages = ch["end_page"] - ch["start_page"] + 1
         url = base_url.rstrip("/") + "/" + filename
 
-        chapter_records.append(
-            {
-                "no": no,
-                "title": ch["title"],
-                "section": ch["section"],
-                "slug": slug,
-                "file": filename,
-                "url": url,
-                "pages": pages,
-                "size_kb": size_kb,
-                "keywords": ch["keywords"],
-            }
-        )
+        record = {
+            "no": no,
+            "title": ch["title"],
+            "section": ch["section"],
+            "slug": slug,
+            "file": filename,
+            "url": url,
+            "pages": pages,
+            "size_kb": size_kb,
+            "keywords": ch["keywords"],
+        }
+        if ch.get("orig_chapter_no"):
+            record["orig_chapter_no"] = ch["orig_chapter_no"]
+        chapter_records.append(record)
 
         print(f"  {no}  {ch['title']:<48}  pp.{ch['start_page']:>4}-{ch['end_page']:<4}  {size_kb:>5} KB")
 
