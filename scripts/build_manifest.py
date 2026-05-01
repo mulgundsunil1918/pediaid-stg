@@ -131,7 +131,10 @@ def from_bookmarks(reader: PdfReader) -> list[dict]:
 
 # ── Mode 2: title scan ─────────────────────────────────────────────────────
 def from_titles(reader: PdfReader, titles_csv: Path) -> list[dict]:
-    """Match each title to the page where it first appears as a heading."""
+    """Match each chapter title to the page where it first appears as a
+    heading. v2: index-of-contents pages are excluded, and chapters are
+    located in order so each one's page must come AFTER the previous
+    chapter's page."""
     with titles_csv.open(newline="", encoding="utf-8-sig") as f:
         wanted = []
         for raw in csv.DictReader(f):
@@ -142,7 +145,8 @@ def from_titles(reader: PdfReader, titles_csv: Path) -> list[dict]:
     if not wanted:
         sys.exit(f"No usable rows in {titles_csv}")
 
-    print(f"Indexing {len(reader.pages)} pages of text…")
+    n_pages = len(reader.pages)
+    print(f"Indexing {n_pages} pages of text…")
     pages_text = []
     for i, page in enumerate(reader.pages):
         try:
@@ -153,30 +157,74 @@ def from_titles(reader: PdfReader, titles_csv: Path) -> list[dict]:
         if (i + 1) % 50 == 0:
             print(f"  {i + 1} pages indexed")
 
+    # ── Detect TOC / index pages and exclude them from the search pool ──
+    # Any page that contains 4+ distinct chapter titles is almost certainly
+    # a table-of-contents page, not a chapter page.
+    all_titles = [normalise(w["title"]) for w in wanted]
+    toc_pages: set[int] = set()
+    for i, txt in enumerate(pages_text):
+        hits = sum(1 for t in all_titles if t and t in txt)
+        if hits >= 4:
+            toc_pages.add(i)
+    if toc_pages:
+        print(
+            f"  excluded {len(toc_pages)} table-of-contents page(s): "
+            f"{sorted(p + 1 for p in toc_pages)[:10]}"
+            f"{' …' if len(toc_pages) > 10 else ''}"
+        )
+
+    def score_page(target: str, page_idx: int) -> int:
+        """Score how strongly `target` appears as a heading on this page.
+        Returns 0 if the title is not present in the top portion of the
+        page text. Token-overlap fallback intentionally removed — it
+        produced too many false positives."""
+        if page_idx in toc_pages:
+            return 0
+        txt = pages_text[page_idx]
+        head = txt[:600]
+        if target in head:
+            # Earlier in the page = higher score (real headings sit at top).
+            pos = head.find(target)
+            return 200 - (pos // 10)
+        if target in txt:
+            return 60  # appears on page but not as a heading
+        return 0
+
+    # ── Walk chapters in order; each must come after the previous ──
     rows: list[dict] = []
+    cursor = 0  # 0-indexed page; chapter N must be on a page >= cursor
     for w in wanted:
         target = normalise(w["title"])
-        # Score: prefer pages where the title appears near the top.
-        # Scan top 400 chars of each page to favour heading position.
         best_page = None
         best_score = 0
-        for i, txt in enumerate(pages_text):
-            head = txt[:400]
-            full_hit = target in head
-            partial_hit = target in txt
-            if full_hit:
-                score = 100 - (txt[:400].find(target) // 10)
-            elif partial_hit:
-                score = 40
-            else:
-                # token overlap fallback
-                tw = set(target.split())
-                ph = set(head.split())
-                overlap = len(tw & ph)
-                score = overlap * 5 if overlap >= max(2, len(tw) // 2) else 0
-            if score > best_score:
-                best_score = score
+
+        # First pass: only look at or after the cursor.
+        for i in range(cursor, n_pages):
+            s = score_page(target, i)
+            if s > best_score:
+                best_score = s
                 best_page = i + 1
+
+        # If nothing strong found ahead, allow a backward scan but
+        # ONLY for the very first chapter (cursor still at 0). For
+        # later chapters, an out-of-order match is almost always wrong.
+        if best_page is None and cursor == 0:
+            for i in range(0, n_pages):
+                s = score_page(target, i)
+                if s > best_score:
+                    best_score = s
+                    best_page = i + 1
+
+        if best_page:
+            cursor = best_page  # advance, so next chapter starts from here
+
+        if best_score >= 150:
+            confidence = "high"
+        elif best_score >= 60:
+            confidence = "medium"
+        else:
+            confidence = "LOW — verify manually"
+
         rows.append(
             {
                 "chapter_no": w.get("chapter_no") or len(rows) + 1,
@@ -184,11 +232,7 @@ def from_titles(reader: PdfReader, titles_csv: Path) -> list[dict]:
                 "section": w.get("section", ""),
                 "start_page": best_page or "",
                 "keywords": "",
-                "confidence": (
-                    "high" if best_score >= 80
-                    else "medium" if best_score >= 40
-                    else "LOW — verify manually"
-                ),
+                "confidence": confidence,
             }
         )
 
