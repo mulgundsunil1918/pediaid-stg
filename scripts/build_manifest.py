@@ -183,17 +183,27 @@ def from_titles(reader: PdfReader, titles_csv: Path) -> list[dict]:
             f"{' …' if len(toc_pages) > 10 else ''}"
         )
 
+    # The publication uses '<title> 1 NN <body>' at the top of every
+    # chapter start page (where NN is the chapter number). When that
+    # pattern is present the page is unambiguously a chapter start and
+    # we score it very high — this kills tie-collisions where two
+    # chapters' titles both substring-match the same page text.
+    chapter_marker_re = re.compile(r"^1\s+\d{1,3}\s")
+
     def score_page(target: str, page_idx: int) -> int:
-        """Score how strongly `target` appears as a heading on this page.
-        Earlier on the page and earlier in the book both rank higher."""
+        """Score how strongly `target` appears as a heading on this page."""
         if page_idx in toc_pages:
             return 0
         txt = pages_text[page_idx]
         head = txt[:600]
         if target in head:
             pos = head.find(target)
-            # Heading bias: earlier-in-page wins ties.
-            return 200 - (pos // 10)
+            # What follows the title? If it's the publication's chapter
+            # marker ('1 94', '1 147' etc.) this is the real chapter start.
+            after = head[pos + len(target):pos + len(target) + 40].lstrip()
+            is_heading = bool(chapter_marker_re.match(after))
+            base = 200 - (pos // 10)
+            return base + 400 if is_heading else base
         if target in txt:
             return 60
         return 0

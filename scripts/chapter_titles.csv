@@ -16,7 +16,7 @@ chapter_no,title,section
 15,Viral Hepatitis,Infectious Diseases
 16,Enuresis,Nephrology
 17,Sinusitis,ENT
-18,Acute Tonsillo-pharyngitis,ENT
+18,Acute Pharyngitis / Acute Tonsillopharyngitis,ENT
 19,Post Covid Lung,Respiratory
 20,Acute Watery Diarrhea,Gastroenterology
 21,Leptospirosis,Infectious Diseases
@@ -45,11 +45,11 @@ chapter_no,title,section
 44,Megaloblastic Anemia,Hematology/Oncology
 45,Under 5 Wheeze,Respiratory
 46,Sickle Cell Disease - Management,Hematology/Oncology
-47,Acute GI Bleed,Gastroenterology
+47,Acute Gastrointestinal Bleed,Gastroenterology
 48,Febrile Seizures,Neurology
 49,Atypical Bacterial Pneumonia,Respiratory
 50,Varicella,Infectious Diseases
-51,JIA / JRA,Rheumatology
+51,Juvenile Idiopathic Arthritis,Rheumatology
 52,GBS,Neurology
 53,Pneumothorax in children,Respiratory
 54,Infectious Mononucleosis,Infectious Diseases
@@ -69,11 +69,11 @@ chapter_no,title,section
 68,Ophthalmia Neonatorum,Ophthalmology
 69,Epistaxis in Children,ENT
 70,Constipation in Children,Gastroenterology
-71,AKI in Children,Nephrology
+71,Acute Kidney Injury in Children,Nephrology
 72,ITP,Hematology/Oncology
 73,Shock in Office Practice,Emergency
-74,Respiratory Distress in Term Newborn,Neonatology
-75,Cow Milk Protein Allergy,Allergy/Immunology
+74,Respiratory Distress in the Term Newborn,Neonatology
+75,Cow's Milk Protein Allergy,Allergy/Immunology
 76,Myocarditis,Cardiology
 77,Scalds and Burns,Emergency
 78,Hyperthyroidism,Endocrinology
@@ -128,7 +128,7 @@ chapter_no,title,section
 128,Cleft Lip and Palate,Surgery
 129,Diphtheria,Infectious Diseases
 130,Traumatic Brain Injury,Emergency
-131,"Nipah, Zika and Monkey Pox",Infectious Diseases
+131,"Nipah, Zika and Monkeypox",Infectious Diseases
 132,Encephalitis in Children,Neurology
 133,Phimosis,Surgery
 134,Influenza in children,Infectious Diseases

@@ -48,25 +48,42 @@ except ImportError:
 # rule (longest word from the title that isn't a stopword).
 SEARCH_TERMS = {
     "Difficulties in Breathing":
-        ["breathing difficult", "respiratory distress", "approach to breathing"],
+        ["difficulties in breathing", "difficulty in breathing",
+         "approach to breathing", "respiratory distress in children",
+         "approach to a child with"],
     "Acute Tonsillo-pharyngitis":
         ["tonsill"],
+    "Acute Pharyngitis / Acute Tonsillopharyngitis":
+        ["tonsillopharyngitis", "acute pharyngitis"],
     "Acute GI Bleed":
-        ["gi bleed", "gastrointestinal bleed", "upper gi", "lower gi"],
+        ["gi bleed", "gastrointestinal bleed"],
+    "Acute Gastrointestinal Bleed":
+        ["gastrointestinal bleed"],
     "JIA / JRA":
-        ["juvenile idiopathic arthritis", "juvenile arthritis", "jia"],
+        ["juvenile idiopathic arthritis", "juvenile arthritis"],
+    "Juvenile Idiopathic Arthritis":
+        ["juvenile idiopathic"],
     "AKI in Children":
-        ["acute kidney injury", "aki"],
+        ["acute kidney injury"],
+    "Acute Kidney Injury in Children":
+        ["acute kidney injury"],
     "Respiratory Distress in Term Newborn":
-        ["term newborn", "term neonate", "term nb", "respiratory distress in term"],
+        ["term newborn", "term neonate", "respiratory distress in"],
+    "Respiratory Distress in the Term Newborn":
+        ["term newborn"],
     "Cow Milk Protein Allergy":
-        ["cow milk", "cow's milk", "milk protein allergy", "cmpa"],
+        ["cow milk", "cow's milk", "milk protein"],
+    "Cow's Milk Protein Allergy":
+        ["cow's milk"],
     "Specific Learning Disorders":
-        ["specific learning", "learning disorder"],
+        ["specific learning", "learning disorder", "learning disability",
+         "dyslexia", "dyscalculia"],
     "Nipah, Zika and Monkey Pox":
-        ["nipah", "monkeypox", "monkey pox", "zika"],
+        ["nipah", "monkeypox", "zika"],
+    "Nipah, Zika and Monkeypox":
+        ["nipah"],
     "Autism Spectrum Disorders":
-        ["autism spectrum", "autism"],
+        ["autism spectrum"],
     "Measles":
         ["measles"],
 }
@@ -156,7 +173,7 @@ def main() -> None:
         terms = SEARCH_TERMS.get(title) or fallback_terms(title)
         print(f"── orig #{w.get('chapter_no', '?'):>3}  {title} ──")
 
-        any_hits = False
+        any_strong_hits = False
         for term in terms:
             term_n = normalise(term)
             print(f"   searching: {term_n!r}")
@@ -165,20 +182,30 @@ def main() -> None:
                 head = txt[:600]
                 if term_n in head:
                     pos = head.find(term_n)
-                    hits.append((200 - pos // 5, i + 1, head))
+                    # Heading bias + chapter-marker bonus.
+                    after = head[pos + len(term_n):pos + len(term_n) + 40].lstrip()
+                    is_heading = bool(re.match(r"^1\s+\d{1,3}\s", after))
+                    base = 200 - pos // 5
+                    score = base + 400 if is_heading else base
+                    hits.append((score, i + 1, head))
                 elif term_n in txt:
                     hits.append((50, i + 1, txt[:200]))
             hits.sort(key=lambda h: -h[0])
             for score, page_no, snippet in hits[:5]:
                 snip = re.sub(r"\s+", " ", snippet)[:160]
-                print(f"      p.{page_no:>4}  \"{snip}…\"")
-                any_hits = True
-            if hits:
-                # First good term that hit something — stop trying more.
+                marker = " [HEADING]" if score >= 400 else ""
+                print(f"      p.{page_no:>4}{marker}  \"{snip}…\"")
+            # Only stop trying more terms if we found a strong heading hit.
+            if hits and hits[0][0] >= 400:
+                any_strong_hits = True
                 break
+            if hits and not any_strong_hits:
+                # weak hits — keep trying other terms but don't reprint blanks
+                continue
 
-        if not any_hits:
-            print(f"      (no matches found)")
+        if not any_strong_hits:
+            print(f"      (no chapter-heading match found — chapter may be "
+                  f"missing from this PDF, or named differently)")
         print()
 
     print(
