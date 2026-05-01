@@ -1,150 +1,150 @@
-chapter_no,title,section
-1,Neonatal Hypoglycemia,Neonatology
-2,Atopic Dermatitis,Dermatology
-3,Anaphylaxis,Allergy/Immunology
-4,Difficulties in Breathing,Respiratory
-5,Neonatal Sepsis,Neonatology
-6,UTI,Nephrology
-7,Food Allergy,Allergy/Immunology
-8,Enteric Fever,Infectious Diseases
-9,Menstrual Irregularities,Adolescent
-10,Croup in children,Respiratory
-11,Community Acquired Pneumonia,Respiratory
-12,Hypothyroidism,Endocrinology
-13,Rickets,Endocrinology
-14,Allergic Rhinitis,Allergy/Immunology
-15,Viral Hepatitis,Infectious Diseases
-16,Enuresis,Nephrology
-17,Sinusitis,ENT
-18,Acute Pharyngitis / Acute Tonsillopharyngitis,ENT
-19,Post Covid Lung,Respiratory
-20,Acute Watery Diarrhea,Gastroenterology
-21,Leptospirosis,Infectious Diseases
-22,Diabetes Mellitus,Endocrinology
-23,Urticaria,Allergy/Immunology
-24,Acute Otitis Media,ENT
-25,Acute Rheumatic Fever,Cardiology
-26,Childhood Obesity,Endocrinology
-27,Bronchiolitis,Respiratory
-28,Febrile Neutropenia,Hematology/Oncology
-29,Empyema,Respiratory
-30,Persistent Diarrhea,Gastroenterology
-31,SLE,Rheumatology
-32,HSP,Rheumatology
-33,Growing Pains,Orthopaedics
-34,Heart Failure,Cardiology
-35,Bronchial Asthma,Respiratory
-36,Supraventricular Tachycardia,Cardiology
-37,Herpes Simplex,Infectious Diseases
-38,Indications and Timing of Surgeries in Congenital Heart Diseases,Cardiology
-39,Rickettsial Disease,Infectious Diseases
-40,Status Epilepticus in Children,Neurology
-41,Protracted Bacterial Bronchitis,Respiratory
-42,Kawasaki Disease,Rheumatology
-43,G6PD Deficiency,Hematology/Oncology
-44,Megaloblastic Anemia,Hematology/Oncology
-45,Under 5 Wheeze,Respiratory
-46,Sickle Cell Disease - Management,Hematology/Oncology
-47,Acute Gastrointestinal Bleed,Gastroenterology
-48,Febrile Seizures,Neurology
-49,Atypical Bacterial Pneumonia,Respiratory
-50,Varicella,Infectious Diseases
-51,Juvenile Idiopathic Arthritis,Rheumatology
-52,GBS,Neurology
-53,Pneumothorax in children,Respiratory
-54,Infectious Mononucleosis,Infectious Diseases
-55,CPR-BLS in Office Practice,Emergency
-56,Acute Bacterial Meningitis,Infectious Diseases
-57,Hypertension,Cardiology
-58,Acute Epiglottitis,Respiratory
-59,Iron Deficiency Anemia,Hematology/Oncology
-60,"Hand, Foot and Mouth Disease",Infectious Diseases
-61,Hemophilia,Hematology/Oncology
-62,Preterm with Respiratory Distress,Neonatology
-63,Multisystem Inflammatory Syndrome,Infectious Diseases
-64,Nephrotic Syndrome,Nephrology
-65,Acute Covid-19 Infection in Children,Infectious Diseases
-66,Developmental Dysplasia of the Hip,Orthopaedics
-67,Neonatal Hypothermia,Neonatology
-68,Ophthalmia Neonatorum,Ophthalmology
-69,Epistaxis in Children,ENT
-70,Constipation in Children,Gastroenterology
-71,Acute Kidney Injury in Children,Nephrology
-72,ITP,Hematology/Oncology
-73,Shock in Office Practice,Emergency
-74,Respiratory Distress in the Term Newborn,Neonatology
-75,Cow's Milk Protein Allergy,Allergy/Immunology
-76,Myocarditis,Cardiology
-77,Scalds and Burns,Emergency
-78,Hyperthyroidism,Endocrinology
-79,Neonatal Jaundice,Neonatology
-80,Autoimmune Encephalitis,Neurology
-81,Specific Learning Disorders,Developmental/Behavioural
-82,Puberty,Adolescent
-83,Substance Use Disorders in Adolescents,Adolescent
-84,Rabies Prophylaxis in Children,Infectious Diseases
-85,Oral Thrush,Infectious Diseases
-86,Scorpion Envenomation,Toxicology
-87,Thalassemia,Hematology/Oncology
-88,Cerebral Palsy,Neurology
-89,Breath Holding Spell,Neurology
-90,Cyanotic Spell,Cardiology
-91,Antenatally Detected Hydronephrosis,Nephrology
-92,GERD,Gastroenterology
-93,Anticipatory Guidance in Adolescents,Adolescent
-94,Autism Spectrum Disorders,Developmental/Behavioural
-95,Malaria,Infectious Diseases
-96,Social Media Do's and Don'ts,Adolescent
-97,Approach to Short Stature,Endocrinology
-98,Feeding in Preterm and Feed Intolerance,Neonatology
-99,Neurocysticercosis,Neurology
-100,Attention Deficit Hyperactivity Disorder,Developmental/Behavioural
-101,Allergic Conjunctivitis,Ophthalmology
-102,Snakebite,Toxicology
-103,Neonatal Cholestasis,Neonatology
-104,Neonatal Resuscitation Program,Neonatology
-105,Oxygen Therapy in Office Practice,Respiratory
-106,Staphylococcal Scalded Skin Syndrome,Dermatology
-107,CTEV and Flat Foot,Orthopaedics
-108,Teen Depression and Suicide Prevention,Adolescent
-109,Poisoning in Children,Toxicology
-110,Unprovoked Seizures,Neurology
-111,Paracetamol Poisoning,Toxicology
-112,Undescended Testes and Testicular Torsion,Surgery
-113,Pertussis in Children,Infectious Diseases
-114,Pulled Elbow,Orthopaedics
-116,Dental Caries,Dental
-117,Stevens-Johnson Syndrome,Dermatology
-118,Acute Dysentery,Gastroenterology
-119,Tinea Infections,Dermatology
-120,Tropical Pulmonary Eosinophilia,Respiratory
-121,Coping with Stress in Adolescents,Adolescent
-122,Hyperpigmented Lesions,Dermatology
-123,Early Detection and Early Intervention of a High-risk Neonate,Neonatology
-124,Injuries in Office Practice,Emergency
-125,Common Worm Infestations,Infectious Diseases
-126,Neonatal Seizures,Neonatology
-127,Hemophagocytic Lymphohistiocytosis,Hematology/Oncology
-128,Cleft Lip and Palate,Surgery
-129,Diphtheria,Infectious Diseases
-130,Traumatic Brain Injury,Emergency
-131,"Nipah, Zika and Monkeypox",Infectious Diseases
-132,Encephalitis in Children,Neurology
-133,Phimosis,Surgery
-134,Influenza in children,Infectious Diseases
-135,Hypospadias,Surgery
-136,Severe Acute Malnutrition,Nutrition
-137,Hypopigmentation,Dermatology
-138,Dengue in Children,Infectious Diseases
-139,Acute Glomerulonephritis,Nephrology
-140,Inguinal Hernia and Hydrocele,Surgery
-141,Adolescent Sexuality,Adolescent
-142,Antimicrobial Stewardship in Office Practice,Infectious Diseases
-143,Pediatric Headache,Neurology
-144,Retinopathy of Prematurity,Ophthalmology
-145,Temper Tantrum,Developmental/Behavioural
-146,Management of Fever without Focus,General Paediatrics
-147,Measles,Infectious Diseases
-148,TORCH Infections,Infectious Diseases
-149,Diagnosis and Management of Childhood Tuberculosis,Infectious Diseases
-150,Management of Cough in Office Practice,Respiratory
+chapter_no,title,section,alt_titles
+1,Neonatal Hypoglycemia,Neonatology,
+2,Atopic Dermatitis,Dermatology,
+3,Anaphylaxis,Allergy/Immunology,
+4,Difficulties in Breathing,Respiratory,Approach to Breathing|Approach to a Child with Breathing Difficulty|Respiratory Distress in Children
+5,Neonatal Sepsis,Neonatology,
+6,UTI,Nephrology,Urinary Tract Infection|Urinary Tract Infections
+7,Food Allergy,Allergy/Immunology,
+8,Enteric Fever,Infectious Diseases,
+9,Menstrual Irregularities,Adolescent,
+10,Croup in children,Respiratory,Croup
+11,Community Acquired Pneumonia,Respiratory,
+12,Hypothyroidism,Endocrinology,
+13,Rickets,Endocrinology,
+14,Allergic Rhinitis,Allergy/Immunology,
+15,Viral Hepatitis,Infectious Diseases,
+16,Enuresis,Nephrology,
+17,Sinusitis,ENT,
+18,Acute Pharyngitis / Acute Tonsillopharyngitis,ENT,Acute Tonsillopharyngitis|Acute Pharyngitis
+19,Post Covid Lung,Respiratory,Post-COVID Lung|Post Covid
+20,Acute Watery Diarrhea,Gastroenterology,
+21,Leptospirosis,Infectious Diseases,
+22,Diabetes Mellitus,Endocrinology,
+23,Urticaria,Allergy/Immunology,
+24,Acute Otitis Media,ENT,
+25,Acute Rheumatic Fever,Cardiology,
+26,Childhood Obesity,Endocrinology,Obesity in Children
+27,Bronchiolitis,Respiratory,
+28,Febrile Neutropenia,Hematology/Oncology,
+29,Empyema,Respiratory,
+30,Persistent Diarrhea,Gastroenterology,
+31,SLE,Rheumatology,Systemic Lupus Erythematosus|Lupus Erythematosus
+32,HSP,Rheumatology,Henoch Schonlein Purpura|Henoch-Schonlein Purpura|Henoch Schonlein
+33,Growing Pains,Orthopaedics,
+34,Heart Failure,Cardiology,Cardiac Failure
+35,Bronchial Asthma,Respiratory,
+36,Supraventricular Tachycardia,Cardiology,
+37,Herpes Simplex,Infectious Diseases,
+38,Indications and Timing of Surgeries in Congenital Heart Diseases,Cardiology,Surgeries in Congenital Heart|Congenital Heart Diseases
+39,Rickettsial Disease,Infectious Diseases,
+40,Status Epilepticus in Children,Neurology,Status Epilepticus
+41,Protracted Bacterial Bronchitis,Respiratory,
+42,Kawasaki Disease,Rheumatology,
+43,G6PD Deficiency,Hematology/Oncology,
+44,Megaloblastic Anemia,Hematology/Oncology,
+45,Under 5 Wheeze,Respiratory,Under-5 Wheeze|Wheeze in Under 5
+46,Sickle Cell Disease - Management,Hematology/Oncology,Sickle Cell Disease|Sickle Cell
+47,Acute Gastrointestinal Bleed,Gastroenterology,Acute GI Bleed
+48,Febrile Seizures,Neurology,Febrile Seizure
+49,Atypical Bacterial Pneumonia,Respiratory,
+50,Varicella,Infectious Diseases,Chickenpox
+51,Juvenile Idiopathic Arthritis,Rheumatology,JIA
+52,GBS,Neurology,Guillain Barre Syndrome|Guillain-Barre Syndrome|Guillain Barre
+53,Pneumothorax in children,Respiratory,Pneumothorax
+54,Infectious Mononucleosis,Infectious Diseases,
+55,CPR-BLS in Office Practice,Emergency,CPR BLS|Cardiopulmonary Resuscitation
+56,Acute Bacterial Meningitis,Infectious Diseases,
+57,Hypertension,Cardiology,Hypertension in Children
+58,Acute Epiglottitis,Respiratory,Epiglottitis
+59,Iron Deficiency Anemia,Hematology/Oncology,
+60,"Hand, Foot and Mouth Disease",Infectious Diseases,Hand Foot and Mouth Disease
+61,Hemophilia,Hematology/Oncology,
+62,Preterm with Respiratory Distress,Neonatology,Preterm Respiratory Distress
+63,Multisystem Inflammatory Syndrome,Infectious Diseases,MIS-C|Multisystem Inflammatory Syndrome in Children
+64,Nephrotic Syndrome,Nephrology,
+65,Acute Covid-19 Infection in Children,Infectious Diseases,Acute COVID-19|COVID-19 Infection
+66,Developmental Dysplasia of the Hip,Orthopaedics,DDH
+67,Neonatal Hypothermia,Neonatology,
+68,Ophthalmia Neonatorum,Ophthalmology,
+69,Epistaxis in Children,ENT,Epistaxis
+70,Constipation in Children,Gastroenterology,Constipation
+71,Acute Kidney Injury in Children,Nephrology,AKI in Children|Acute Kidney Injury
+72,ITP,Hematology/Oncology,Immune Thrombocytopenia|Idiopathic Thrombocytopenic Purpura|Immune Thrombocytopenic Purpura
+73,Shock in Office Practice,Emergency,Shock
+74,Respiratory Distress in the Term Newborn,Neonatology,Respiratory Distress in Term Newborn|Respiratory Distress in Term Neonate
+75,Cow's Milk Protein Allergy,Allergy/Immunology,Cow Milk Protein Allergy|CMPA|Cow Milk Allergy
+76,Myocarditis,Cardiology,
+77,Scalds and Burns,Emergency,Burns and Scalds|Scalds & Burns
+78,Hyperthyroidism,Endocrinology,
+79,Neonatal Jaundice,Neonatology,
+80,Autoimmune Encephalitis,Neurology,
+81,Specific Learning Disorders,Developmental/Behavioural,Specific Learning Disorder|Learning Disability|Learning Disabilities|Dyslexia
+82,Puberty,Adolescent,
+83,Substance Use Disorders in Adolescents,Adolescent,Substance Use Disorder|Substance Abuse
+84,Rabies Prophylaxis in Children,Infectious Diseases,Rabies Prophylaxis|Rabies
+85,Oral Thrush,Infectious Diseases,Candidiasis
+86,Scorpion Envenomation,Toxicology,Scorpion Sting|Scorpion Bite
+87,Thalassemia,Hematology/Oncology,
+88,Cerebral Palsy,Neurology,
+89,Breath Holding Spell,Neurology,Breath Holding|Breath-Holding Spell
+90,Cyanotic Spell,Cardiology,Cyanotic Spells
+91,Antenatally Detected Hydronephrosis,Nephrology,Antenatal Hydronephrosis
+92,GERD,Gastroenterology,Gastroesophageal Reflux Disease|Gastro-oesophageal Reflux
+93,Anticipatory Guidance in Adolescents,Adolescent,Anticipatory Guidance
+94,Autism Spectrum Disorders,Developmental/Behavioural,Autism Spectrum Disorder|ASD
+95,Malaria,Infectious Diseases,
+96,Social Media Do's and Don'ts,Adolescent,Social Media|Social Media in Adolescents
+97,Approach to Short Stature,Endocrinology,Short Stature
+98,Feeding in Preterm and Feed Intolerance,Neonatology,Feeding in Preterm|Feed Intolerance|Preterm Feeding
+99,Neurocysticercosis,Neurology,
+100,Attention Deficit Hyperactivity Disorder,Developmental/Behavioural,ADHD
+101,Allergic Conjunctivitis,Ophthalmology,
+102,Snakebite,Toxicology,Snake Bite|Snake Envenomation
+103,Neonatal Cholestasis,Neonatology,
+104,Neonatal Resuscitation Program,Neonatology,Neonatal Resuscitation|NRP
+105,Oxygen Therapy in Office Practice,Respiratory,Oxygen Therapy
+106,Staphylococcal Scalded Skin Syndrome,Dermatology,SSSS|Scalded Skin Syndrome
+107,CTEV and Flat Foot,Orthopaedics,Clubfoot|Congenital Talipes Equinovarus|CTEV
+108,Teen Depression and Suicide Prevention,Adolescent,Teen Depression|Adolescent Depression
+109,Poisoning in Children,Toxicology,Poisoning
+110,Unprovoked Seizures,Neurology,Unprovoked Seizure|First Unprovoked Seizure
+111,Paracetamol Poisoning,Toxicology,Acetaminophen Poisoning
+112,Undescended Testes and Testicular Torsion,Surgery,Undescended Testes|Testicular Torsion|Cryptorchidism
+113,Pertussis in Children,Infectious Diseases,Pertussis|Whooping Cough
+114,Pulled Elbow,Orthopaedics,Nursemaid Elbow
+116,Dental Caries,Dental,
+117,Stevens-Johnson Syndrome,Dermatology,SJ Syndrome|SJS|Stevens Johnson Syndrome
+118,Acute Dysentery,Gastroenterology,Dysentery
+119,Tinea Infections,Dermatology,Tinea|Ringworm|Dermatophytosis
+120,Tropical Pulmonary Eosinophilia,Respiratory,Pulmonary Eosinophilia|TPE
+121,Coping with Stress in Adolescents,Adolescent,Stress in Adolescents|Coping with Stress
+122,Hyperpigmented Lesions,Dermatology,Hyperpigmentation
+123,Early Detection and Early Intervention of a High-risk Neonate,Neonatology,High-risk Neonate|Early Intervention Neonate
+124,Injuries in Office Practice,Emergency,Office Injuries|Pediatric Injuries
+125,Common Worm Infestations,Infectious Diseases,Worm Infestation|Helminthic Infections
+126,Neonatal Seizures,Neonatology,Neonatal Seizure
+127,Hemophagocytic Lymphohistiocytosis,Hematology/Oncology,HLH
+128,Cleft Lip and Palate,Surgery,Cleft Lip|Cleft Palate
+129,Diphtheria,Infectious Diseases,
+130,Traumatic Brain Injury,Emergency,TBI|Head Injury
+131,"Nipah, Zika and Monkeypox",Infectious Diseases,Nipah Zika and Monkeypox|Nipah and Zika
+132,Encephalitis in Children,Neurology,Encephalitis
+133,Phimosis,Surgery,
+134,Influenza in children,Infectious Diseases,Influenza
+135,Hypospadias,Surgery,
+136,Severe Acute Malnutrition,Nutrition,SAM
+137,Hypopigmentation,Dermatology,Hypopigmented Lesions
+138,Dengue in Children,Infectious Diseases,Dengue
+139,Acute Glomerulonephritis,Nephrology,Glomerulonephritis|Post-streptococcal Glomerulonephritis
+140,Inguinal Hernia and Hydrocele,Surgery,Inguinal Hernia|Hydrocele
+141,Adolescent Sexuality,Adolescent,Sexuality in Adolescents
+142,Antimicrobial Stewardship in Office Practice,Infectious Diseases,Antimicrobial Stewardship
+143,Pediatric Headache,Neurology,Headache|Headache in Children
+144,Retinopathy of Prematurity,Ophthalmology,ROP
+145,Temper Tantrum,Developmental/Behavioural,Temper Tantrums
+146,Management of Fever without Focus,General Paediatrics,Fever without Focus|Fever without a Focus
+147,Measles,Infectious Diseases,
+148,TORCH Infections,Infectious Diseases,TORCH
+149,Diagnosis and Management of Childhood Tuberculosis,Infectious Diseases,Childhood Tuberculosis|Tuberculosis in Children|Pediatric Tuberculosis
+150,Management of Cough in Office Practice,Respiratory,Management of Cough|Cough in Children

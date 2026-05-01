@@ -169,11 +169,42 @@ def from_titles(reader: PdfReader, titles_csv: Path) -> list[dict]:
         if (i + 1) % 50 == 0:
             print(f"  {i + 1} pages indexed")
 
+    # All searches use word-boundary regex so short abbreviations like
+    # 'UTI' / 'SLE' don't substring-match inside longer words ('autism',
+    # 'measles', 'routine', 'pollution', etc.).
+    def title_re(target: str) -> re.Pattern:
+        return re.compile(r"\b" + re.escape(target) + r"\b")
+
+    # Each chapter can declare alternate names in the alt_titles column
+    # (pipe-separated). The matcher tries every variant and picks the
+    # best-scoring page across all of them. This handles:
+    #   - abbreviations vs expansions  ('UTI' / 'Urinary Tract Infection')
+    #   - punctuation differences      ("Cow Milk" / "Cow's Milk")
+    #   - chapter renames in body      ('Difficulties in Breathing' /
+    #                                   'Approach to Breathing')
+    def candidates_for(w: dict) -> list[str]:
+        """Return all normalised candidates: main title + alt_titles."""
+        cands = [normalise(w["title"])]
+        alt = (w.get("alt_titles") or "").strip()
+        if alt:
+            for piece in alt.split("|"):
+                p = normalise(piece)
+                if p and p not in cands:
+                    cands.append(p)
+        return cands
+
+    title_patterns = []
+    for w in wanted:
+        cands = candidates_for(w)
+        pats = [(c, title_re(c)) for c in cands]
+        title_patterns.append((w, pats))
+
     # ── Detect TOC / index pages and exclude them from the search pool ──
-    all_titles = [normalise(w["title"]) for w in wanted]
     toc_pages: set[int] = set()
     for i, txt in enumerate(pages_text):
-        hits = sum(1 for t in all_titles if t and t in txt)
+        # Count chapters whose MAIN title matches; alt titles don't count
+        # toward TOC detection (they're often partial/generic words).
+        hits = sum(1 for _w, pats in title_patterns if pats[0][1].search(txt))
         if hits >= 4:
             toc_pages.add(i)
     if toc_pages:
@@ -190,37 +221,36 @@ def from_titles(reader: PdfReader, titles_csv: Path) -> list[dict]:
     # chapters' titles both substring-match the same page text.
     chapter_marker_re = re.compile(r"^1\s+\d{1,3}\s")
 
-    def score_page(target: str, page_idx: int) -> int:
-        """Score how strongly `target` appears as a heading on this page."""
+    def score_page(pat: re.Pattern, target_len: int, page_idx: int) -> int:
+        """Score how strongly the title pattern appears as a heading."""
         if page_idx in toc_pages:
             return 0
         txt = pages_text[page_idx]
         head = txt[:600]
-        if target in head:
-            pos = head.find(target)
-            # What follows the title? If it's the publication's chapter
-            # marker ('1 94', '1 147' etc.) this is the real chapter start.
-            after = head[pos + len(target):pos + len(target) + 40].lstrip()
+        m = pat.search(head)
+        if m:
+            pos = m.start()
+            after = head[pos + target_len:pos + target_len + 40].lstrip()
             is_heading = bool(chapter_marker_re.match(after))
             base = 200 - (pos // 10)
             return base + 400 if is_heading else base
-        if target in txt:
+        if pat.search(txt):
             return 60
         return 0
 
     # ── For each title, find its best-matching page anywhere in the PDF ──
     matches = []
-    for w in wanted:
-        target = normalise(w["title"])
+    for w, pats in title_patterns:
         best_page = None
         best_score = 0
-        for i in range(n_pages):
-            s = score_page(target, i)
-            # Tie-break: prefer earlier page (a chapter heading is typically
-            # the first occurrence; later mentions are cross-references).
-            if s > best_score:
-                best_score = s
-                best_page = i + 1
+        best_variant = None
+        for cand, pat in pats:
+            for i in range(n_pages):
+                s = score_page(pat, len(cand), i)
+                if s > best_score:
+                    best_score = s
+                    best_page = i + 1
+                    best_variant = cand
         matches.append(
             {
                 "orig_chapter_no": w.get("chapter_no", ""),
@@ -228,6 +258,7 @@ def from_titles(reader: PdfReader, titles_csv: Path) -> list[dict]:
                 "section": w.get("section", ""),
                 "best_page": best_page,
                 "score": best_score,
+                "matched_via": best_variant,
             }
         )
 
