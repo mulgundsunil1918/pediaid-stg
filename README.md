@@ -31,27 +31,57 @@ You only need Python 3.9+ and one library.
 pip install pypdf
 ```
 
-### 1. Edit a manifest
+The IAP-STG 2022 index page lists chapter titles but **not** start pages, so we have a helper that auto-discovers them. Two-step flow:
 
-Make a copy of the example and fill in **all 150 chapters**:
+### Step 1 — auto-detect every chapter's start_page
+
+You don't have to scroll the PDF. The helper script handles it two ways:
+
+**A. Bookmarks mode (preferred — instant + exact)**
+
+If your PDF has an embedded outline / bookmarks sidebar (most modern medical PDFs do — open in Adobe Reader and check the left bookmarks panel):
 
 ```bash
-cp scripts/manifest.example.csv scripts/manifest.csv
+python scripts/build_manifest.py /path/to/IAP_STG_2022.pdf --mode bookmarks
 ```
 
-Open `scripts/manifest.csv` in Excel / Numbers / VS Code and add one row per chapter:
+This reads the PDF's table of contents directly and writes `scripts/manifest.csv` with start pages already filled in for every chapter.
+
+**B. Titles mode (fallback — works when bookmarks are missing)**
+
+If the PDF has no bookmarks, transcribe the chapter list (titles only — no page numbers needed) into a CSV using `scripts/chapter_titles.example.csv` as the template:
+
+```csv
+chapter_no,title,section
+1,Neonatal Hypoglycemia,Neonatology
+2,Atopic Dermatitis,Dermatology
+...
+```
+
+Then:
+
+```bash
+python scripts/build_manifest.py /path/to/IAP_STG_2022.pdf \
+    --mode titles --titles scripts/chapter_titles.csv
+```
+
+The script scans the PDF text page by page, matches each title to the page where it first appears as a heading, and writes `scripts/manifest.csv` with start pages filled in. A `confidence` column is appended — anything flagged `LOW` is worth a 5-second eyeball before you proceed.
+
+### Step 2 — add keywords + run the splitter
+
+Open `scripts/manifest.csv` in Excel and fill in the `keywords` column (semicolon-separated). **This is the make-or-break field for search quality** — add 5–10 synonyms per chapter (clinical names, abbreviations, lay terms, common misspellings).
 
 | Column        | Required | Example                               | Notes |
 |---------------|----------|---------------------------------------|-------|
 | `chapter_no`  | yes      | `1`                                   | The script zero-pads to `001` |
 | `title`       | yes      | `Neonatal Hypoglycemia`               | Used for filename slug + display |
 | `section`     | no       | `Neonatology`                         | Free-text grouping for the app |
-| `start_page`  | yes      | `15`                                  | 1-indexed page in the master PDF where the chapter begins |
-| `keywords`    | no       | `hypoglycemia;low blood sugar;BSL`    | Semicolon-separated. **This is what makes search feel magic** — add 5–10 synonyms per chapter (clinical names, abbreviations, lay terms, common misspellings) |
+| `start_page`  | yes      | `15`                                  | Auto-filled by `build_manifest.py` |
+| `keywords`    | no       | `hypoglycemia;low blood sugar;BSL`    | You fill this. 5–10 synonyms per chapter is the sweet spot. |
 
-You only fill in `start_page`. The script computes `end_page` automatically as `(next chapter's start_page − 1)`. The last chapter runs to the final page.
+The script computes `end_page` automatically as `(next chapter's start_page − 1)`. The last chapter runs to the final page.
 
-### 2. Run the splitter
+Then run the splitter:
 
 ```bash
 python scripts/split_pdf.py /path/to/IAP_STG_2022.pdf scripts/manifest.csv
@@ -61,7 +91,7 @@ Output:
 - 150 PDFs written to `chapters/`
 - `stg_index.json` written at the repo root, with absolute URLs already wired to this Pages site.
 
-### 3. Push
+### Step 3 — push
 
 ```bash
 git add chapters/ stg_index.json
