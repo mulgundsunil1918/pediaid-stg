@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>PediAid STG · IAP-STG 2022 chapter index</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1e3a5f;
+    --navy-2: #2c5282;
+    --accent: #3182ce;
+    --ink: #2d3748;
+    --ink-muted: #718096;
+    --bg: #f7fafc;
+    --card: #ffffff;
+    --border: #e2e8f0;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 980px; margin: 0 auto; padding: 36px 24px 80px; }
+  header { margin-bottom: 28px; }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 5px 11px;
+    border-radius: 999px;
+    background: rgba(30, 58, 95, 0.08);
+    border: 1px solid rgba(30, 58, 95, 0.16);
+    color: var(--navy);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+  }
+  h1 {
+    margin: 14px 0 6px;
+    color: var(--navy);
+    font-weight: 800;
+    font-size: clamp(26px, 3.4vw, 36px);
+    letter-spacing: -0.02em;
+  }
+  .lead { color: var(--ink-muted); font-size: 14px; max-width: 70ch; }
+  .meta-row {
+    display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px;
+    font-size: 12px; color: var(--ink-muted);
+  }
+  .meta-row span {
+    background: var(--card);
+    border: 1px solid var(--border);
+    padding: 4px 10px; border-radius: 999px;
+  }
+  .search {
+    margin: 24px 0 18px;
+    display: flex; gap: 10px;
+  }
+  .search input {
+    flex: 1;
+    padding: 12px 14px;
+    border-radius: 10px;
+    border: 1px solid var(--border);
+    background: var(--card);
+    font-size: 14px;
+    font-family: inherit;
+    color: var(--ink);
+    outline: none;
+    transition: border-color 160ms ease, box-shadow 160ms ease;
+  }
+  .search input:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.18);
+  }
+  .count { color: var(--ink-muted); font-size: 12px; padding: 12px 4px; }
+  .list {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+  }
+  .row {
+    display: grid;
+    grid-template-columns: 56px 1fr auto auto;
+    gap: 14px;
+    align-items: center;
+    padding: 12px 16px;
+    border-top: 1px solid var(--border);
+    text-decoration: none;
+    color: var(--ink);
+    transition: background 120ms ease;
+  }
+  .row:first-of-type { border-top: 0; }
+  .row:hover { background: #f1f6ff; }
+  .row .num {
+    font-variant-numeric: tabular-nums;
+    color: var(--ink-muted);
+    font-weight: 600;
+    font-size: 13px;
+  }
+  .row .title { font-weight: 600; color: var(--navy); }
+  .row .section {
+    color: var(--ink-muted);
+    font-size: 12px;
+    padding: 3px 9px;
+    border-radius: 999px;
+    background: rgba(30, 58, 95, 0.06);
+  }
+  .row .meta { color: var(--ink-muted); font-size: 12px; min-width: 96px; text-align: right; }
+  .empty {
+    padding: 32px;
+    text-align: center;
+    color: var(--ink-muted);
+    font-size: 13px;
+  }
+  footer {
+    margin-top: 28px;
+    padding-top: 18px;
+    border-top: 1px dashed var(--border);
+    color: var(--ink-muted);
+    font-size: 12px;
+  }
+  footer a { color: var(--navy); }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <span class="eyebrow">PediAid · STG index</span>
+      <h1>IAP Standard Treatment Guidelines 2022</h1>
+      <p class="lead">
+        Per-chapter PDFs hosted for the PediAid app. Each entry below links to a
+        single chapter PDF, served from this GitHub Pages site. The Flutter app
+        consumes <code>stg_index.json</code> from the same origin.
+      </p>
+      <div class="meta-row">
+        <span id="meta-count">0 chapters</span>
+        <span id="meta-version">version —</span>
+        <span id="meta-generated">generated —</span>
+      </div>
+    </header>
+
+    <div class="search">
+      <input id="q" type="search" placeholder="Search by title, section or keyword…" autofocus />
+    </div>
+
+    <div class="count" id="count">Loading…</div>
+    <div class="list" id="list"></div>
+
+    <footer>
+      Source: IAP Standard Treatment Guidelines 2022.
+      Index: <a href="stg_index.json">stg_index.json</a> ·
+      App: <a href="https://mulgundsunil1918.github.io/pediaid-flutter/">PediAid web</a> ·
+      Repo: <a href="https://github.com/mulgundsunil1918/pediaid-stg">pediaid-stg on GitHub</a>
+    </footer>
+  </div>
+
+<script>
+(async function () {
+  const $list  = document.getElementById('list');
+  const $count = document.getElementById('count');
+  const $q     = document.getElementById('q');
+  const $mc    = document.getElementById('meta-count');
+  const $mv    = document.getElementById('meta-version');
+  const $mg    = document.getElementById('meta-generated');
+
+  let data = { chapters: [] };
+  try {
+    const r = await fetch('stg_index.json', { cache: 'no-store' });
+    data = await r.json();
+  } catch (e) {
+    $list.innerHTML = '<div class="empty">Could not load <code>stg_index.json</code>.</div>';
+    $count.textContent = '';
+    return;
+  }
+
+  $mc.textContent = (data.total_chapters || data.chapters.length) + ' chapters';
+  $mv.textContent = 'version ' + (data.version || '—');
+  $mg.textContent = data.generated_at
+    ? 'generated ' + new Date(data.generated_at).toISOString().slice(0,10)
+    : 'generated —';
+
+  function render(rows) {
+    if (!rows.length) {
+      $list.innerHTML = '<div class="empty">No chapters match.</div>';
+      $count.textContent = '0 results';
+      return;
+    }
+    $count.textContent = rows.length + ' result' + (rows.length === 1 ? '' : 's');
+    $list.innerHTML = rows.map(c =>
+      `<a class="row" href="${c.url || ('chapters/' + c.file)}" target="_blank" rel="noopener">
+        <span class="num">${c.no}</span>
+        <span class="title">${c.title}</span>
+        <span class="section">${c.section || ''}</span>
+        <span class="meta">${c.pages ? c.pages + ' pp · ' : ''}${c.size_kb ? Math.round(c.size_kb/1024*10)/10 + ' MB' : ''}</span>
+      </a>`
+    ).join('');
+  }
+
+  function score(c, q) {
+    const t = (c.title || '').toLowerCase();
+    const s = (c.section || '').toLowerCase();
+    const ks = (c.keywords || []).map(k => k.toLowerCase()).join(' | ');
+    let n = 0;
+    if (t.includes(q)) n += 10;
+    if (ks.includes(q)) n += 5;
+    if (s.includes(q)) n += 2;
+    if (t.startsWith(q)) n += 5;
+    return n;
+  }
+
+  function search() {
+    const q = $q.value.trim().toLowerCase();
+    if (!q) return render(data.chapters);
+    const ranked = data.chapters
+      .map(c => ({ c, n: score(c, q) }))
+      .filter(x => x.n > 0)
+      .sort((a, b) => b.n - a.n)
+      .map(x => x.c);
+    render(ranked);
+  }
+
+  $q.addEventListener('input', search);
+  render(data.chapters);
+})();
+</script>
+</body>
+</html>

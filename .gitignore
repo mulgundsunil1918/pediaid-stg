@@ -1,0 +1,19 @@
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+*.log
+
+# Never commit the master PDF — only the per-chapter splits go in chapters/
+*.original.pdf
+IAP_STG*.pdf
+master.pdf
+
+# Local copy of the manifest (the example one is fine to commit)
+scripts/manifest.csv
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
